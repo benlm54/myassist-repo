@@ -3,19 +3,18 @@
  */
 package com.myassist;
 
-import com.myassist.ContentSource;
-import com.myassist.Item;
-
 public class TextAnalyzer
 {
+	private NLPInterface nlp;
+
 	public TextAnalyzer()
 	{
-
+		nlp = new NLPInterface();	
 	}
 
 	public void scanForItems()
 	{
-
+		
 	}
 
 	public void addContentSource(ContentSource source)
