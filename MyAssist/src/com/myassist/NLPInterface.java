@@ -10,8 +10,9 @@ public class NLPInterface
 	private TokenNameFinderModel timeModel;
 	private TokenNameFinderModel dateModel;
 	private TokenNameFinderModel placeModel; 
-	private SentenceModel sentModel;
-	private TokenizerModel tokenModel;
+	private SentenceModel        sentModel;
+	private TokenizerModel       tokenModel;
+	private DoccatModel          catModel;
 
 	public NLPInterface()
 	{
@@ -24,14 +25,14 @@ public class NLPInterface
 	/*
 	 * Sentence and Tokenizer Interface
 	 */
-	public TrainSentencer()
+	public void TrainSentencer()
 	{
 		InputStream is = new FileInputStream("models/en-sent.bin");
 		sentModel = new SentenceModel(is);
 		is.close();
 	}
 
-	public TrainTokenizer()
+	public void TrainTokenizer()
 	{
 		InputStream is = new FileInputStream("models/en-token.bin");
 		tokenModel = new TokenizerModel(is);
@@ -53,7 +54,7 @@ public class NLPInterface
 	/*
 	 *  Named Entity Interface
 	 */
-	public TrainNameRecognizer()
+	public void TrainNameRecognizer()
 	{
 		InputStream is = new FileInputStream("models/en-ner-person.bin");
 		personModel = new TokenNameFinderModel(is);
@@ -121,18 +122,48 @@ public class NLPInterface
 	/*
 	 *  Document Categorizer Interface
 	 */
-	public void SetCategories(List<String> categories)
-	{
-
-	}
-
 	public void TrainCategorizer()
 	{
+		InputStream dataIn = null;
+		try
+		{
+			dataIn = new FileInputStream("training/en-doccat.train");
 
+			ObjectStream<String> lineStream = new PlainTextByLineStream(dataIn, "UTF-8");
+			ObjectStream<DocumentSample> sampleStream = new DocumentSampleStream(lineStream);
+
+			catModel = DocumentCategorizerME.train("en", sampleStream);
+
+			dataIn.close();
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+
+		if (catModel != null)
+		{
+			try
+			{
+				OutputStream modelOut = new BufferedOutputStream(new FileOutputStream("models/en-doccat.bin");
+				model.serialize(modelOut);
+				modelOut.close();
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+		}
 	}
 
-	public String GetCategory(String text)
+	public Category GetCategory(String text)
 	{
-		return "error";
+		DocumentCategorizerME cat = new DocumentCategorizerME(catModel);
+		double[] outcomes = cat.categorize(text);
+		String category   = cat.getBestOutcome();
+
+		Category result = new Category();
+		result.setCategory(category, outcomes[0]); //TODO get right outcome value
+		return result;
 	}
 }
