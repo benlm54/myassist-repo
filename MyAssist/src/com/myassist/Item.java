@@ -15,27 +15,64 @@ public class Item
 
 	public Item (Category cat, String txt, Chunk src)
 	{
-		category     = cat;
-		originalText = txt;
-		source       = src;
+		setCategory(cat);
+		setOriginalText(txt);
+		setSource(src);
 	}
 
 	/*
 	 *  Getters and setters
 	 */
-	public void setNameHits(String[] hits)
-	{
-		personHits = hits;
+	public Category getCategory() {
+		return category;
 	}
 
-	public void setPlaceHits(String[] hits)
-	{
-		placeHits = hits;
+	public void setCategory(Category category) {
+		this.category = category;
 	}
 
-	public void setTimeHits(String[] hits)
-	{
-		timeHits = hits;
+	public String getOriginalText() {
+		return originalText;
+	}
+
+	public void setOriginalText(String originalText) {
+		this.originalText = originalText;
+	}
+
+	public Chunk getSource() {
+		return source;
+	}
+
+	public void setSource(Chunk source) {
+		this.source = source;
+	}
+
+	public String[] getPersonHits() {
+		return personHits;
+	}
+
+	public void setPersonHits(String[] personHits) {
+		this.personHits = personHits;
+	}
+
+	public String[] getPlaceHits() {
+		return placeHits;
+	}
+
+	public void setPlaceHits(String[] placeHits) {
+		this.placeHits = placeHits;
+	}
+
+	public String[] getTimeHits() {
+		return timeHits;
+	}
+
+	public void setTimeHits(String[] timeHits) {
+		this.timeHits = timeHits;
+	}
+
+	public String getSummary() {
+		return "Item: Category: " + category + " Text: " + originalText;
 	}
 
 }

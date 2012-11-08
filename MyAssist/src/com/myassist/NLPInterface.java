@@ -4,6 +4,28 @@
 
 package com.myassist;
 
+import java.io.BufferedOutputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
+import opennlp.tools.doccat.DoccatModel;
+import opennlp.tools.doccat.DocumentCategorizerME;
+import opennlp.tools.doccat.DocumentSample;
+import opennlp.tools.doccat.DocumentSampleStream;
+import opennlp.tools.namefind.NameFinderME;
+import opennlp.tools.namefind.TokenNameFinderModel;
+import opennlp.tools.sentdetect.SentenceDetectorME;
+import opennlp.tools.sentdetect.SentenceModel;
+import opennlp.tools.tokenize.TokenizerME;
+import opennlp.tools.tokenize.TokenizerModel;
+import opennlp.tools.util.ObjectStream;
+import opennlp.tools.util.PlainTextByLineStream;
+import opennlp.tools.util.Span;
+
 public class NLPInterface
 {
 	private TokenNameFinderModel personModel;
@@ -27,16 +49,34 @@ public class NLPInterface
 	 */
 	public void TrainSentencer()
 	{
-		InputStream is = new FileInputStream("models/en-sent.bin");
-		sentModel = new SentenceModel(is);
-		is.close();
+		InputStream is;
+		try {
+			is 		  = new FileInputStream("models/en-sent.bin");
+			sentModel = new SentenceModel(is);
+			is.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void TrainTokenizer()
 	{
-		InputStream is = new FileInputStream("models/en-token.bin");
-		tokenModel = new TokenizerModel(is);
-		is.close();
+		InputStream is;
+		try {
+			is         = new FileInputStream("models/en-token.bin");
+			tokenModel = new TokenizerModel(is);
+			is.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public String[] GetSentences(String text)
@@ -56,21 +96,31 @@ public class NLPInterface
 	 */
 	public void TrainNameRecognizer()
 	{
-		InputStream is = new FileInputStream("models/en-ner-person.bin");
-		personModel = new TokenNameFinderModel(is);
-		is.close();
+		InputStream is;
+		try {
+			is = new FileInputStream("models/en-ner-person.bin");
+			personModel = new TokenNameFinderModel(is);
+			is.close();
 
-		is = new FileInputStream("models/en-ner-location.bin");
-		placeModel = new TokenNameFinderModel(is);
-		is.close();
+			is = new FileInputStream("models/en-ner-location.bin");
+			placeModel = new TokenNameFinderModel(is);
+			is.close();
+			
+			is = new FileInputStream("models/en-ner-date.bin");
+			dateModel = new TokenNameFinderModel(is);
+			is.close();
+
+			is = new FileInputStream("models/en-ner-time.bin");
+			timeModel = new TokenNameFinderModel(is);
+			is.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
-		InputStream is = new FileInputStream("models/en-ner-date.bin");
-		dateModel = new TokenNameFinderModel(is);
-		is.close();
-
-		is = new FileInputStream("models/en-ner-time.bin");
-		timeModel = new TokenNameFinderModel(is);
-		is.close();
 	}
 
 	public String[] GetNames(String text)
@@ -111,9 +161,9 @@ public class NLPInterface
 		Span[] names = nameFinder.find(textToks);
 
 		String[] result = new String[names.length];
-		for (Span s: names)
+		for (int i = 0; i < names.length; i++)
 		{
-			result.add(s.toString());
+			result[i] = names[i].toString();
 		}
 
 		return result;
@@ -145,8 +195,8 @@ public class NLPInterface
 		{
 			try
 			{
-				OutputStream modelOut = new BufferedOutputStream(new FileOutputStream("models/en-doccat.bin");
-				model.serialize(modelOut);
+				OutputStream modelOut = new BufferedOutputStream(new FileOutputStream("models/en-doccat.bin"));
+				catModel.serialize(modelOut);
 				modelOut.close();
 			}
 			catch (IOException e)
@@ -160,7 +210,7 @@ public class NLPInterface
 	{
 		DocumentCategorizerME cat = new DocumentCategorizerME(catModel);
 		double[] outcomes = cat.categorize(text);
-		String category   = cat.getBestOutcome();
+		String category   = cat.getBestCategory(outcomes);
 
 		Category result = new Category();
 		result.setCategory(category, outcomes[0]); //TODO get right outcome value

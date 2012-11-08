@@ -6,8 +6,8 @@ package com.myassist;
 
 public abstract class ContentSource
 {
-	public boolean hasText();
+	public abstract boolean hasText();
 
-	public Chunk   getNextChunk(); 
+	public abstract Chunk   getNextChunk(); 
 }
 

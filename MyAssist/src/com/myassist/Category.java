@@ -4,15 +4,6 @@
 
 package com.myassist;
 
-public enum CategoryType
-{
-	DEFAULT,
-	TASK,
-	APPOINTMENT,
-	CONTACT,
-	REMINDER
-}
-
 public class Category
 {
 	public CategoryType type;	
@@ -20,7 +11,7 @@ public class Category
 
 	public Category()
 	{
-		type = DEFAULT;
+		type = CategoryType.DEFAULT;
 		qualityIndicator = 0;
 	}
 
@@ -28,23 +19,23 @@ public class Category
 	{
 		if (catTxt == "task")
 		{
-			type = TASK;
+			type = CategoryType.TASK;
 		}
 		else if (catTxt == "appointment")
 		{
-			type = APPOINTMENT;
+			type = CategoryType.APPOINTMENT;
 		}
 		else if (catTxt == "contact")
 		{
-			type = CONTACT;
+			type = CategoryType.CONTACT;
 		}
 		else if (catTxt == "reminder")
 		{
-			type = REMINDER;
+			type = CategoryType.REMINDER;
 		}
 		else
 		{
-			type = DEFAULT;
+			type = CategoryType.DEFAULT;
 		}
 
 		qualityIndicator = qual;

@@ -3,6 +3,9 @@
  */
 package com.myassist;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TextAnalyzer
 {
 	private NLPInterface        nlp;
@@ -24,14 +27,16 @@ public class TextAnalyzer
 			{
 				Chunk chunk = src.getNextChunk();
 
-				String sentences[] = nlp.GetSentences(chunk.getText());
+				String sentences[] = nlp.GetSentences(chunk.text);
 
 				for (int i = 0; i < sentences.length; i++)
 				{
 					Category cat = nlp.GetCategory(sentences[i]);
 
-					//if catgory is vaid, create item and get named entities
-					items.push(new Item(cat, sentences[i], chunk));
+					Item item = new Item(cat, sentences[i], chunk);
+					
+					//TODO if catgory is vaid, create item and get named entities
+					items.add(item);
 				}
 			}
 		}
@@ -56,7 +61,7 @@ public class TextAnalyzer
 
 	public Item popItem()
 	{
-		return items.pop();
+		return items.remove(items.size() - 1);
 	}
 
 	public boolean hasItems()
