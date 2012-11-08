@@ -16,11 +16,12 @@ public class FileContentSource extends ContentSource
 
 	public FileContentSource(String f)
 	{
+		Logger.log("FileContentSource: Reading file " + f + "...");
 		filename = f;
 		try
 		{
 			file = new FileReader(filename);
-
+			
 			while (file.ready())
 			{
 				int r = file.read();

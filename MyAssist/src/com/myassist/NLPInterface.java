@@ -38,9 +38,16 @@ public class NLPInterface
 
 	public NLPInterface()
 	{
+		Logger.log("NLPInterface: Training sentencer...");
 		TrainSentencer();
+
+		Logger.log("NLPInterface: Training tokenizer...");
 		TrainTokenizer();
+
+		Logger.log("NLPInterface: Training name recognizer...");
 		TrainNameRecognizer();
+
+		Logger.log("NLPInterface: Training categorizer...");
 		TrainCategorizer();
 	}
 

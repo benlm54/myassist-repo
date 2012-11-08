@@ -4,20 +4,16 @@
 
 package com.myassist;
 
-import com.myassist.TextAnalyzer;
-import com.myassist.FileContentSource;
-import com.myassist.Item;
-
 public class MyAssistTest
 {
 	public static void main(String[] args)
 	{
-		System.out.println("Startig MyAssistTest...");
+		Logger.log("Startig MyAssistTest...");
 		
 		TextAnalyzer analyzer = new TextAnalyzer();
 		analyzer.addContentSource(new FileContentSource("test.txt"));
 
-		System.out.println("Getting Item Summaries...");
+		Logger.log("Getting Item Summaries...");
 		while (analyzer.isContentAvailable())
 		{
 			analyzer.scanForItems();
@@ -25,11 +21,11 @@ public class MyAssistTest
 			while(analyzer.hasItems())
 			{
 				Item item = analyzer.popItem();
-				System.out.println(item.getSummary());
+				Logger.log(item.getSummary());
 			}
 		}
 
-		System.out.println("Exiting MyAssistTest");
+		Logger.log("Exiting MyAssistTest");
 	}
 }
 
