@@ -220,7 +220,7 @@ public class NLPInterface
 		String category   = cat.getBestCategory(outcomes);
 
 		Category result = new Category();
-		result.setCategory(category, outcomes[0]); //TODO get right outcome value
+		result.setCategory(category, Utility.max(outcomes));
 		return result;
 	}
 }
