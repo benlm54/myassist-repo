@@ -3,24 +3,55 @@
  */
 
 package com.myassist;
+ 
+import java.io.FileReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Date;
 
 public class FileContentSource extends ContentSource
 {
-	
-	public FileContentSource(String filname)
+	private FileReader file;
+	private String filename;
+
+	public FileContentSource(String f)
 	{
+		filename = f;
+		try
+		{
+			file = new FileReader(filename);
 
+			while (file.ready())
+			{
+				int r = file.read();
+				if (r != -1)
+				{
+					text += String.valueOf((char) r);
+				}
+				else
+				{
+					break;
+				}
+			}
+
+			chunkSize = text.length();
+
+			file.close();
+		}
+		catch (FileNotFoundException e)
+		{
+			System.out.println("File " + filename + " not found!");
+		}
+		catch (IOException e)
+		{
+			System.out.println("IOException on " + filename);
+		}
 	}
 
-	@Override
-	public boolean hasText() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public Chunk getNextChunk() {
-		// TODO Auto-generated method stub
-		return null;
+	public Chunk getNextChunk()
+	{
+		Date d = new Date();
+		cursor += chunkSize;
+		return new Chunk(text, "Source File: " + filename, d.toString());	
 	}
 }
