@@ -1,6 +1,7 @@
 /*
  *
  */
+package com.myassist;
 
 public class Logger
 {

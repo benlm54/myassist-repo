@@ -36,7 +36,7 @@ import java.util.Properties;
  */
 public class Version {
 
-  private static final String DEV_VERSION_STRING = "0.0.0-SNAPSHOT";
+  private static final String DEV_VERSION_STRING = "1.5.2"; //"0.0.0-SNAPSHOT";
   
   public static final Version DEV_VERSION = Version.parse(DEV_VERSION_STRING);
   

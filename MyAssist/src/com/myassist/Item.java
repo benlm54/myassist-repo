@@ -72,7 +72,7 @@ public class Item
 	}
 
 	public String getSummary() {
-		return "Item: Category: " + category + " Text: " + originalText;
+		return "Item: Category: " + category.type + " Qual: " + category.qualityIndicator + " Text: " + originalText;
 	}
 
 }

@@ -61,7 +61,7 @@ public class TextAnalyzer
 
 	public Item popItem()
 	{
-		return items.remove(items.size() - 1);
+		return items.remove(0);
 	}
 
 	public boolean hasItems()
