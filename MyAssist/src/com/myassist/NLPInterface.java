@@ -32,6 +32,8 @@ public class NLPInterface
 	private TokenNameFinderModel timeModel;
 	private TokenNameFinderModel dateModel;
 	private TokenNameFinderModel placeModel; 
+	private TokenNameFinderModel orgModel;  
+	private TokenNameFinderModel moneyModel; 
 	private SentenceModel        sentModel;
 	private TokenizerModel       tokenModel;
 	private DoccatModel          catModel;
@@ -113,6 +115,10 @@ public class NLPInterface
 			placeModel = new TokenNameFinderModel(is);
 			is.close();
 			
+			is = new FileInputStream("models/en-ner-organization.bin");
+			orgModel = new TokenNameFinderModel(is);
+			is.close();
+			
 			is = new FileInputStream("models/en-ner-date.bin");
 			dateModel = new TokenNameFinderModel(is);
 			is.close();
@@ -120,6 +126,11 @@ public class NLPInterface
 			is = new FileInputStream("models/en-ner-time.bin");
 			timeModel = new TokenNameFinderModel(is);
 			is.close();
+			
+			is = new FileInputStream("models/en-ner-money.bin");
+			moneyModel = new TokenNameFinderModel(is);
+			is.close();
+			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -135,9 +146,23 @@ public class NLPInterface
 		return getNamedEntities(text, personModel); 
 	}
 
-	public String[] GetPlaces(String text)
+	public String[] GetPlacesAndOrgs(String text)
 	{
-		return getNamedEntities(text, placeModel);
+		String[] places = getNamedEntities(text, placeModel);
+		String[] orgs   = getNamedEntities(text, orgModel);
+		
+		String[] result = new String[places.length + orgs.length];
+		for (int i = 0; i < places.length; i++)
+		{
+			result[i] = places[i];
+		}
+
+		for (int i = places.length; i < result.length; i++)
+		{
+			result[i] = orgs[i];
+		}
+
+		return result;
 	}
 
 	public String[] GetDatesAndTimes(String text)
@@ -159,6 +184,11 @@ public class NLPInterface
 		return result;
 	}
 
+	public String[] GetMoney(String text)
+	{
+		return getNamedEntities(text, moneyModel); 
+	}
+	
 	private String[] getNamedEntities(String text, TokenNameFinderModel model)
 	{
 		NameFinderME nameFinder = new NameFinderME(model);
@@ -170,7 +200,11 @@ public class NLPInterface
 		String[] result = new String[names.length];
 		for (int i = 0; i < names.length; i++)
 		{
-			result[i] = names[i].toString();
+			result[i] = textToks[names[i].getStart()] + " ";
+			for (int j = names[i].getStart() + 1; j < names[i].getEnd(); j++)
+			{
+				result[i].concat(textToks[j] + " ");
+			}
 		}
 
 		return result;

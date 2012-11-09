@@ -21,7 +21,7 @@ public class MyAssistTest
 			while(analyzer.hasItems())
 			{
 				Item item = analyzer.popItem();
-				Logger.log(item.getSummary());
+				Logger.log(item.toString());
 			}
 		}
 

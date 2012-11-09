@@ -8,6 +8,8 @@ import java.util.List;
 
 public class TextAnalyzer
 {
+	private final double ITEM_THRESHOLD = 0.5;
+	
 	private NLPInterface        nlp;
 	private List<Item>          items;
 	private List<ContentSource> sources;
@@ -32,11 +34,17 @@ public class TextAnalyzer
 				for (int i = 0; i < sentences.length; i++)
 				{
 					Category cat = nlp.GetCategory(sentences[i]);
-
-					Item item = new Item(cat, sentences[i], chunk);
-					
-					//TODO if catgory is vaid, create item and get named entities
-					items.add(item);
+					Item item;
+					if (cat.qualityIndicator > ITEM_THRESHOLD)
+					{
+						item = new Item(cat, sentences[i], chunk);
+						
+						item.setPersonHits(nlp.GetNames(item.getOriginalText()));
+						item.setPlaceHits(nlp.GetPlacesAndOrgs(item.getOriginalText()));
+						item.setTimeHits(nlp.GetDatesAndTimes(item.getOriginalText()));
+						
+						items.add(item);
+					}
 				}
 			}
 		}
