@@ -11,7 +11,7 @@ public class MyAssistTest
 		Logger.log("Startig MyAssistTest...");
 		
 		TextAnalyzer analyzer = new TextAnalyzer();
-		analyzer.addContentSource(new FileContentSource("test/test.txt"));
+		analyzer.addContentSource(new FileContentSource("test/list_test.txt"));
 
 		Logger.log("Getting Item Summaries...");
 		while (analyzer.isContentAvailable())

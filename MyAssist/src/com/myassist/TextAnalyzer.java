@@ -33,6 +33,7 @@ public class TextAnalyzer
 
 				for (int i = 0; i < sentences.length; i++)
 				{
+					Logger.log(sentences[i]);
 					Category cat = nlp.GetCategory(sentences[i]);
 					Item item;
 					if (cat.qualityIndicator > ITEM_THRESHOLD)

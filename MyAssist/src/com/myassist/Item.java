@@ -71,9 +71,7 @@ public class Item
 	public void setPlaceHits(String[] placeHits) {
 		for (int i = 0; i < placeHits.length; i++)
 		{
-			Logger.log("adding " + placeHits[i]);
 			this.placeHits.add(placeHits[i]);
-			Logger.log(this.placeHits.get(i) + " added");
 		}
 	}
 
@@ -84,9 +82,7 @@ public class Item
 	public void setTimeHits(String[] timeHits) {
 		for (int i = 0; i < timeHits.length; i++)
 		{
-			Logger.log("adding " + timeHits[i]);
 			this.timeHits.add(timeHits[i]);
-			Logger.log(this.timeHits.get(i) + " added");
 		}
 	}
 
